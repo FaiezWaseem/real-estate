@@ -10,10 +10,11 @@ authController.post('/register', async (req, res) => {
         if (isExist) {
             throw new Error('Already such an Email Registered')
         }
+        console.log(req.body)
         const hashPassword = await bcrypt.hash(req.body.password, 10)
         const newUser = await User.create({ ...req.body, password: hashPassword })
         const { password, ...others } = newUser._doc
-        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '72h' })
+        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn:  '100d' })
         return res.status(201).json({ others, token })
     } catch (error) {
         res.status(500).json(error.message)
@@ -31,7 +32,7 @@ authController.post('/login', async (req, res) => {
         }
         const { password, ...others } = user._doc
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '72h' });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '100d' });
         return res.status(201).json({ others, token })
 
     } catch (error) {

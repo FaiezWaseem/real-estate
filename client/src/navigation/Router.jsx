@@ -7,7 +7,8 @@ import Main from "../pages";
 import Error from "../pages/404"
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
-import Listing from "../pages/Listing";
+import Listing from "../pages/listing/";
+import CreateListing from "../pages/listing/create";
 import Screen from "../utils/Screens";
 
   const router = createBrowserRouter([
@@ -27,6 +28,10 @@ import Screen from "../utils/Screens";
     {
       path:  Screen.VIEW,
       element: <Listing />
+    },
+    {
+      path:  Screen.ADD_LISTING,
+      element: <CreateListing />
     },
   ]);
 

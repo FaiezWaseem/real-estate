@@ -11,10 +11,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage})
 
-// upload single image it should conatin req.body
+// upload single image it should contain req.body
 uploadController.post("/image", upload.single("image"), async (req, res) => {
     try {
-        return res.status(200).json("File uploded successfully");
+        return res.status(200).json({msg :"File uploaded successfully" , filename : req.body.filename , url : `${process.env.APP_URL+req.body.filename}`});
     } catch (error) {
         console.error(error);
     }

@@ -1,6 +1,6 @@
 import { Box, Text, Input, Button, Select } from "@chakra-ui/react";
 export default () => (
-    <Box h={['400px' , '500px' ,'600px']} w={"100%"} backgroundImage={"url('./hero.png')"} display={"flex"} flexDirection={"column"} alignItems={'center'} justifyContent={"center"} >
+    <Box h={['400px' , '500px' ,'600px']} w={"100%"} backgroundImage={"url('./hero.png')"} backgroundAttachment={'fixed'} backgroundSize={'cover'}   display={"flex"} flexDirection={"column"} alignItems={'center'} justifyContent={"center"} >
         <Text bg={"rgba(0,0,0,0.5)"} p={2} mb={4} fontSize={[26 , 32]} color={"#fff"} fontWeight={'bold'} fontFamily={"monospace"} >Find your dream place right here</Text>
         <Box bg={"#fff"} shadow={'md'} roundedBottom={8} w={["90%", "70%", "50%"]} p={2} >
             <Box display={'flex'} alignItems={'center'} justifyContent={"center"} >

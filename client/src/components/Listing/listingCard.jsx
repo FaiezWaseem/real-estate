@@ -18,8 +18,11 @@ import {
   } from '@chakra-ui/react';
   import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
   import { MdLocalShipping } from 'react-icons/md';
-  
+  import {useLocation} from 'react-router-dom';
   export default function() {
+    const location = useLocation();
+    const property = location.state;
+    console.log(property)
     return (
       <Container maxW={'7xl'}>
         <SimpleGrid
@@ -31,7 +34,7 @@ import {
               rounded={'md'}
               alt={'product image'}
               src={
-                '../property-2.png'
+                property?.img
               }
               fit={'cover'}
               align={'center'}
@@ -45,13 +48,13 @@ import {
                 lineHeight={1.1}
                 fontWeight={600}
                 fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}>
-                Smart Home Villa near Kraken mountains
+                {property?.title}
               </Heading>
               <Text
                 color={useColorModeValue('gray.900', 'gray.400')}
                 fontWeight={300}
                 fontSize={'2xl'}>
-                $350.00 USD
+                ${property?.price} USD
               </Text>
             </Box>
   
@@ -65,10 +68,7 @@ import {
               }>
               <VStack spacing={{ base: 4, sm: 6 }}>
                 <Text fontSize={'lg'}>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad
-                  aliquid amet at delectus doloribus dolorum expedita hic, ipsum
-                  maxime modi nam officiis porro, quae, quisquam quos
-                  reprehenderit velit? Natus, totam.
+                  {property?.desc}
                 </Text>
               </VStack>
               <Box>
@@ -86,25 +86,25 @@ import {
                     <Text as={'span'} fontWeight={'bold'}>
                       Square Meters:
                     </Text>{' '}
-                    1271 m
+                    {property?.sqmeatures} m
                   </ListItem>
                   <ListItem>
                     <Text as={'span'} fontWeight={'bold'}>
                       Region :
                     </Text>{' '}
-                    Europe
+                    {property?.continent}
                   </ListItem>
                   <ListItem>
                     <Text as={'span'} fontWeight={'bold'}>
                       BEDS :
                     </Text>{' '}
-                    2
+                    {property.beds}
                   </ListItem>
                   <ListItem>
                     <Text as={'span'} fontWeight={'bold'}>
                       Category :
                     </Text>{' '}
-                    Village
+                    {property?.type}
                   </ListItem>
                 </List>
               </Box>
