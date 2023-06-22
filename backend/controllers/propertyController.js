@@ -1,13 +1,29 @@
 const propertyController = require('express').Router()
 const Property = require('../models/Property')
+const jwt = require('jsonwebtoken')
 const verifyToken = require('../middleware/verifyToken')
 
 
 // getAll
 propertyController.get('/getAll' , async (req , res)=>{
     try {
-        const properties = await Property.find({})
-        return res.status(200).json(properties)
+        let skip = 0;
+        if(req?.query?.next){
+           skip = jwt.decode(req?.query?.next ,process.env.JWT_SECRET)
+           skip = skip.skip;
+        }
+        const properties = await Property.find({}).populate('currentOwner' , '-passsword').skip(skip).limit(6)
+        let token ;
+        if(properties.length === 0){
+            token =  null;
+        }else{
+            token = jwt.sign({ skip : skip+properties.length }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        }
+        return res.status(200).json({
+            data : properties,
+            nextToken : token,
+            totalRecieved : properties.length
+        })
     } catch (error) {
         res.status(500).json(error.message)
     }
@@ -27,9 +43,20 @@ propertyController.get('/find/featured' , async (req , res)=>{
 // /find/?type=beach
 propertyController.get('/find' , async (req , res)=>{
     try {
-        const type = req.query
-        const Properties = await Property.find(type).populate('currentOwner' , '-password')
-        return res.status(200).json(Properties)
+        if(req?.query?.type && req?.query?.continent){ 
+            const Properties = await Property.find( { type : req?.query?.type , continent : req?.query?.continent }).populate('currentOwner' , '-password')
+            return res.status(200).json(Properties)
+        }
+        if(req?.query?.type){
+            let type = req.query
+            const Properties = await Property.find(type).populate('currentOwner' , '-password')
+            return res.status(200).json(Properties)
+        }
+        if(req?.query?.continent){
+            let continent = req.query
+            const Properties = await Property.find(continent).populate('currentOwner' , '-password')
+            return res.status(200).json(Properties)
+        }
     } catch (error) {
         res.status(500).json(error.message)
     }

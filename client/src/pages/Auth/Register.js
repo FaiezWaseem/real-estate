@@ -12,7 +12,7 @@ import {
   AvatarBadge,
   IconButton,
   Center,
-  FormErrorMessage
+  useToast
 } from '@chakra-ui/react';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { useEffect, useState } from "react";
@@ -28,6 +28,7 @@ export default () => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const toast = useToast();
 
 
   useEffect(() => {
@@ -92,9 +93,22 @@ export default () => {
       email,
       password,
       profileImg: selectedImage,
-    }))
+    }) , true)
     console.log(response)
-    Storage.save('user', response, Storage.JSON)
+    if(response?.token){
+      Storage.save('user', response, Storage.JSON)
+      toast({
+        title: 'Login Success',
+        description: "Successfully Signed In",
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'top'
+      });
+      navigate("/")
+    }else{
+      alert("Error "+response)
+    }
 
   }
 
